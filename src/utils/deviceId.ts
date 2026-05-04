@@ -1,30 +1,18 @@
-import { load } from "@tauri-apps/plugin-store";
+import { invoke } from "@tauri-apps/api/core";
 
 export async function getDeviceId() {
-    try {
-        console.log("INIT DEVICE ID");
-        const store = await load("device.json");
-        console.log("STORE READY");
-        let deviceId = await store.get<string>("device_id");
-        console.log("FROM STORE:", deviceId);
-        if (deviceId) {
-            localStorage.setItem("device_id", deviceId);
-            return deviceId;
-        }
-        deviceId = crypto.randomUUID();
-        console.log("GENERATED:", deviceId);
-        await store.set("device_id", deviceId);
-        await store.save();
-        localStorage.setItem("device_id", deviceId);
+    let cached = localStorage.getItem("device_id");
+    if (cached) return cached;
 
+    try {
+        const deviceId = await invoke<string>("get_device_id");
+        localStorage.setItem("device_id", deviceId);
         return deviceId;
     } catch (err) {
-        console.error("STORE ERROR:", err);
-        let id = localStorage.getItem("device_id");
-        if (!id) {
-            id = crypto.randomUUID();
-            localStorage.setItem("device_id", id);
-        }
-        return id;
+        console.error("DEVICE ID ERROR:", err);
+
+        const fallback = crypto.randomUUID();
+        localStorage.setItem("device_id", fallback);
+        return fallback;
     }
 }
