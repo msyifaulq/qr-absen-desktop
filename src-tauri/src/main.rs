@@ -79,6 +79,16 @@ fn device_id_from_machine_guid(machine_guid: &str) -> String {
 }
 
 fn main() {
+    std::env::set_var(
+        "WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", 
+        "--no-sandbox --disable-gpu"
+    );
+
+    std::env::set_var(
+        "WEBVIEW2_RELEASE_CHANNEL_PREFERENCE",
+        "1"
+    );
+    
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(tauri::generate_handler![
