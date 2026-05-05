@@ -9,19 +9,20 @@ export default function QrCodePage() {
     const [loading, setLoading] = useState(false);
 
     const lokasi = localStorage.getItem("lokasi");
+    const did = localStorage.getItem("did");
 
     useEffect(() => {
         if (!lokasi) return;
         
         handleRefresh();
-    }, [lokasi]);
+    }, [lokasi, did]);
 
     // 🔥 LISTEN ECHO
     useEffect(() => {
         if (!lokasi) return;
 
         const [kantor, lantai] = lokasi.split("_");
-        const channelName = `absensi.${kantor}.${lantai}`;
+        const channelName = `absensi.${kantor}.${lantai}.${did}`;
         const channel = window.Echo.channel(channelName);
 
         // ✅ cek koneksi websocket
@@ -68,7 +69,7 @@ export default function QrCodePage() {
             });
 
         return () => {
-            window.Echo.leave(`absensi.${kantor}.${lantai}`);
+            window.Echo.leave(`absensi.${kantor}.${lantai}.${did}`);
         };
     }, [lokasi]);
 
@@ -107,6 +108,7 @@ export default function QrCodePage() {
     const handleLogout = async () => {
         localStorage.removeItem("lokasi");
         localStorage.removeItem("token");
+        localStorage.removeItem("did");
         window.location.reload();
     };
 

@@ -44,6 +44,7 @@ export default function LoginPage({ onLogin }: any) {
                 username: values.username,
                 password: values.password,
                 device_id: deviceId,
+                versi: __APP_VERSION__,
             });
 
             if (res.data.status) {
@@ -51,6 +52,7 @@ export default function LoginPage({ onLogin }: any) {
                 localStorage.setItem("login_date", today);
                 localStorage.setItem("lokasi", res.data.data.lokasi_qr);
                 localStorage.setItem("token", res.data.data.xx_api_token);
+                localStorage.setItem("did", res.data.data.did);
                 onLogin();
             } else {
                 setAlert({
@@ -120,6 +122,10 @@ export default function LoginPage({ onLogin }: any) {
                         </Form.Item>
                     )}
                 </Form>
+
+                <div style={{ textAlign: "center", marginTop: 12, fontSize: 12, color: "#999" }}>
+                    v{__APP_VERSION__} • Build {__BUILD_DATE__}
+                </div>
             </Card>
         </div>
     );

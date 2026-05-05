@@ -5,6 +5,9 @@ declare global {
         Pusher: typeof Pusher;
         Echo: any;
     }
+    
+    const __APP_VERSION__: string;
+    const __BUILD_DATE__: string;
 }
 
 export {};
