@@ -7,6 +7,7 @@ import "antd/dist/reset.css";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { Modal } from "antd";
+import api from "./api";
 
 function App() {
     const [isLogin, setIsLogin] = useState(() => {
@@ -59,8 +60,8 @@ function App() {
                 const platform = update?.platforms?.[platformKey];
                 console.log("UPDATE platform:", platform);
 
-                const exeUrl = platform?.exe_url;
-                const zipUrl = platform?.url;
+                const exeRes = await api.get("/desktop/download/latest");
+                const exeUrl = exeRes?.data?.exe_url;
 
                 Modal.confirm({
                     title: "Update Tersedia 🚨",
@@ -111,8 +112,7 @@ function App() {
                                 cancelText: "Keluar",
 
                                 onOk: () => {
-                                    const url = exeUrl || zipUrl;
-                                    if (url) window.open(url, "_blank");
+                                    window.open(exeUrl, "_blank");
                                 },
 
                                 onCancel: async () => {
@@ -128,21 +128,23 @@ function App() {
 
                 loading?.destroy?.();
 
-                // Modal.error({
-                //     title: "Update Gagal",
-                //     content: (
-                //         <div>
-                //             <p>Update gagal dilakukan otomatis.</p>
-                //             <p>Silakan download manual.</p>
-                //         </div>
-                //     ),
-                //     okText: "Download .exe",
-                //     onOk: () => {
-                //         // fallback global
-                //         const url = "https://jeoffice.doran.id/app-qr/updates/windows/x86_64/JeofficeQRAbsen_latest.exe";
-                //         window.open(url, "_blank");
-                //     }
-                // });
+                const exeRes = await api.get("/desktop/download/latest");
+                const exeUrl = exeRes?.data?.exe_url;
+
+                Modal.error({
+                    title: "Update Gagal",
+                    content: (
+                        <div>
+                            <p>Update gagal dilakukan otomatis.</p>
+                            <p>Silakan download manual.</p>
+                        </div>
+                    ),
+                    okText: "Download .exe",
+                    onOk: () => {
+                        // fallback global
+                        window.open(exeUrl, "_blank");
+                    }
+                });
             } finally {
                 setCheckingUpdate(false);
             }
