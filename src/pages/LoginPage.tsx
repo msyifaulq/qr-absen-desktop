@@ -40,7 +40,7 @@ export default function LoginPage({ onLogin }: any) {
         setAlert(null);
 
         try {
-            const res = await api.post("/api/login/dekstop", {
+            const res = await api.post("/api/login/desktop", {
                 username: values.username,
                 password: values.password,
                 device_id: deviceId,

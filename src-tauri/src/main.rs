@@ -1,13 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::command;
+use dirs;
+use std::fs;
+use std::path::PathBuf;
 use sysinfo::System;
+use tauri::command;
 use uuid::Uuid;
 use winreg::enums::*;
-use winreg::RegKey;use std::fs;
-use std::path::PathBuf;
-use dirs;
+use winreg::RegKey;
 
 #[command]
 fn get_hardware_info() -> String {
@@ -80,21 +81,17 @@ fn device_id_from_machine_guid(machine_guid: &str) -> String {
 
 fn main() {
     std::env::set_var(
-        "WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", 
-        "--no-sandbox --disable-gpu"
+        "WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS",
+        "--no-sandbox --disable-gpu",
     );
 
-    std::env::set_var(
-        "WEBVIEW2_RELEASE_CHANNEL_PREFERENCE",
-        "1"
-    );
-    
+    std::env::set_var("WEBVIEW2_RELEASE_CHANNEL_PREFERENCE", "1");
+
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_store::Builder::default().build())
-        .invoke_handler(tauri::generate_handler![
-            get_hardware_info,
-            get_device_id
-        ])
+        .invoke_handler(tauri::generate_handler![get_hardware_info, get_device_id])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
