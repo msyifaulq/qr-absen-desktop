@@ -7,6 +7,7 @@ export default function LoginPage({ onLogin }: any) {
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState<any>(null);
     const [deviceId, setDeviceId] = useState<string>("");
+    const [exeUrl, setExeUrl] = useState<string>("");
 
     useEffect(() => {
         const init = async () => {
@@ -28,6 +29,19 @@ export default function LoginPage({ onLogin }: any) {
         };
 
         init();
+    }, []);
+
+    useEffect(() => {
+        const fetchExe = async () => {
+            try {
+                const res = await api.get("/desktop/download/latest");
+                setExeUrl(res?.data?.exe_url || "");
+            } catch (err) {
+                console.error("Gagal ambil exe url:", err);
+            }
+        };
+
+        fetchExe();
     }, []);
 
     const copyDeviceId = async () => {
@@ -97,6 +111,17 @@ export default function LoginPage({ onLogin }: any) {
                     <Form.Item>
                         <Button loading={loading} type="primary" htmlType="submit" block>
                             Login
+                        </Button>
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Button
+                            type="dashed"
+                            block
+                            disabled={!exeUrl}
+                            onClick={() => window.open(exeUrl, "_blank")}
+                        >
+                           Download Installer Latest Version
                         </Button>
                     </Form.Item>
 
