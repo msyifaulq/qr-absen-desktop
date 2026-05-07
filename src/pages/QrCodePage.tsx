@@ -13,8 +13,8 @@ export default function QrCodePage() {
 
     useEffect(() => {
         if (!lokasi) return;
-        
-        handleRefresh();
+
+        console.log("LD:", lokasi + did);
     }, [lokasi, did]);
 
     // 🔥 LISTEN ECHO
@@ -41,6 +41,7 @@ export default function QrCodePage() {
         // ✅ cek berhasil join channel
         channel.subscribed(() => {
             console.log("✅ JOINED CHANNEL:", channelName);
+            handleRefresh();
         });
 
         channel.error((err: any) => {
@@ -77,9 +78,9 @@ export default function QrCodePage() {
         if (!qr) return;
 
         const timer = setTimeout(() => {
-        console.log("⚠️ fallback trigger");
+            console.log("⚠️ fallback trigger");
             handleRefresh();
-        }, (qr.ttl+2) * 1000 + Math.random() * 3000);
+        }, (qr.ttl + 2) * 1000 + Math.random() * 3000);
 
         return () => clearInterval(timer);
     }, [qr]);

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Form, Input, Card, message } from "antd";
 import api from "../api";
 import { getDeviceId } from "../utils/deviceId";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 export default function LoginPage({ onLogin }: any) {
     const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ export default function LoginPage({ onLogin }: any) {
     useEffect(() => {
         const fetchExe = async () => {
             try {
-                const res = await api.get("/desktop/download/latest");
+                const res = await api.get("/api/desktop/download/latest");
                 setExeUrl(res?.data?.exe_url || "");
             } catch (err) {
                 console.error("Gagal ambil exe url:", err);
@@ -119,9 +120,11 @@ export default function LoginPage({ onLogin }: any) {
                             type="dashed"
                             block
                             disabled={!exeUrl}
-                            onClick={() => window.open(exeUrl, "_blank")}
+                            onClick={async () => {
+                                await openUrl(exeUrl);
+                            }}
                         >
-                           Download Installer Latest Version
+                            Download Installer Latest Version
                         </Button>
                     </Form.Item>
 

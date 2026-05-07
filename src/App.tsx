@@ -8,6 +8,8 @@ import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { Modal } from "antd";
 import api from "./api";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 function App() {
     const [isLogin, setIsLogin] = useState(() => {
@@ -60,9 +62,6 @@ function App() {
                 const platform = update?.platforms?.[platformKey];
                 console.log("UPDATE platform:", platform);
 
-                const exeRes = await api.get("/desktop/download/latest");
-                const exeUrl = exeRes?.data?.exe_url;
-
                 Modal.confirm({
                     title: "Update Tersedia 🚨",
                     content: `Versi ${update.version} tersedia. Kamu harus update untuk melanjutkan.`,
@@ -100,6 +99,8 @@ function App() {
 
                             loading?.destroy?.();
 
+                            const exeRes = await api.get("/api/desktop/download/latest");
+                            const exeUrl = exeRes?.data?.exe_url;
                             Modal.error({
                                 title: "Update Gagal",
                                 content: (
@@ -111,8 +112,8 @@ function App() {
                                 okText: "Download .exe",
                                 cancelText: "Keluar",
 
-                                onOk: () => {
-                                    window.open(exeUrl, "_blank");
+                                onOk: async () => {
+                                    await openUrl(exeUrl);
                                 },
 
                                 onCancel: async () => {
@@ -128,7 +129,7 @@ function App() {
 
                 loading?.destroy?.();
 
-                const exeRes = await api.get("/desktop/download/latest");
+                const exeRes = await api.get("/api/desktop/download/latest");
                 const exeUrl = exeRes?.data?.exe_url;
 
                 Modal.error({
@@ -140,9 +141,8 @@ function App() {
                         </div>
                     ),
                     okText: "Download .exe",
-                    onOk: () => {
-                        // fallback global
-                        window.open(exeUrl, "_blank");
+                    onOk: async () => {
+                        await openUrl(exeUrl);
                     }
                 });
             } finally {
@@ -151,6 +151,24 @@ function App() {
         }
 
         checkUpdate();
+    }, []);
+
+    useEffect(() => {
+        const handler = async (e: KeyboardEvent) => {
+            const isShortcut =
+                e.ctrlKey &&
+                e.altKey &&
+                e.shiftKey &&
+                e.key.toLowerCase() === "d";
+            if (isShortcut) {
+                const appWindow: any = getCurrentWindow();
+                await appWindow.openDevtools();
+            }
+        };
+        window.addEventListener("keydown", handler);
+        return () => {
+            window.removeEventListener("keydown", handler);
+        };
     }, []);
 
     // 🔥 BLOCK SEMUA UI SAAT CHECK UPDATE

@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "JeofficeQRAbsen",
   "mainBinaryName": "app",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "identifier": "id.doran.jeoffice.qrabsen",
   "build": {
     "frontendDist": "../dist",
@@ -18,7 +18,8 @@
         "height": 600,
         "resizable": true,
         "fullscreen": false,
-        "maximized": true
+        "maximized": true,
+        "devtools": true
       }
     ],
     "security": {
@@ -43,7 +44,8 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk2QzU3OEFBNjg5MjM0MjcKUldRbk5KSm9xbmpGbHBmVk93enRqZlVlZ050Z3ZBMGNUY1hIRzh0enlZclY1alZVd3h2WVVpYjQK",
+      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk0MEQ1NzU4RjkxREYwMzcKUldRMzhCMzVXRmNObEp5NHJnYjVwUnJ2ME1Ib2srQ0MzVUNuNEZNTms3OStMaSs0UVhMU09FMFAK",
       "endpoints": [
         "https://jeoffice.doran.id/api/desktop/update/{{target}}/{{arch}}/{{current_version}}"
       ],

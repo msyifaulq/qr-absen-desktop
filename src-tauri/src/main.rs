@@ -88,6 +88,7 @@ fn main() {
     std::env::set_var("WEBVIEW2_RELEASE_CHANNEL_PREFERENCE", "1");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_store::Builder::default().build())
