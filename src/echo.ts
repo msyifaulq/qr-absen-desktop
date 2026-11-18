@@ -9,6 +9,6 @@ window.Echo = new Echo({
     wsPort: 80,
     wssPort: 443,
     key: "qtvcsva7cfyrbujewvtd",
-    forceTLS: false,
+    forceTLS: true,
     enabledTransports: ["ws", "wss"],
 });

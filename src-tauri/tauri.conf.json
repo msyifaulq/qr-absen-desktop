@@ -47,7 +47,7 @@
       "active": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk0MEQ1NzU4RjkxREYwMzcKUldRMzhCMzVXRmNObEp5NHJnYjVwUnJ2ME1Ib2srQ0MzVUNuNEZNTms3OStMaSs0UVhMU09FMFAK",
       "endpoints": [
-        "https://jeoffice.doran.id/api/desktop/update/{{target}}/{{arch}}/{{current_version}}"
+        "https://jeoffice.doran.id/api/desktop/update/windows/{{arch}}/{{current_version}}"
       ],
       "windows": {
         "installMode": "passive"

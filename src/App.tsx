@@ -99,8 +99,14 @@ function App() {
 
                             loading?.destroy?.();
 
-                            const exeRes = await api.get("/api/desktop/download/latest");
-                            const exeUrl = exeRes?.data?.exe_url;
+                            let exeUrl = "";
+                            try {
+                                const exeRes = await api.get("/api/desktop/download/latest");
+                                exeUrl = exeRes?.data?.exe_url || "";
+                            } catch (e) {
+                                console.error("Gagal ambil exe url:", e);
+                            }
+
                             Modal.error({
                                 title: "Update Gagal",
                                 content: (
@@ -113,7 +119,9 @@ function App() {
                                 cancelText: "Keluar",
 
                                 onOk: async () => {
-                                    await openUrl(exeUrl);
+                                    if (exeUrl) {
+                                        await openUrl(exeUrl);
+                                    }
                                 },
 
                                 onCancel: async () => {
@@ -129,8 +137,13 @@ function App() {
 
                 loading?.destroy?.();
 
-                const exeRes = await api.get("/api/desktop/download/latest");
-                const exeUrl = exeRes?.data?.exe_url;
+                let exeUrl = "";
+                try {
+                    const exeRes = await api.get("/api/desktop/download/latest");
+                    exeUrl = exeRes?.data?.exe_url || "";
+                } catch (e) {
+                    console.error("Gagal ambil exe url:", e);
+                }
 
                 Modal.error({
                     title: "Update Gagal",
@@ -142,7 +155,9 @@ function App() {
                     ),
                     okText: "Download .exe",
                     onOk: async () => {
-                        await openUrl(exeUrl);
+                        if (exeUrl) {
+                            await openUrl(exeUrl);
+                        }
                     }
                 });
             } finally {
