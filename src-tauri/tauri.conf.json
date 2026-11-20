@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "JeofficeQRAbsen",
-  "mainBinaryName": "app",
-  "version": "1.0.4",
+  "mainBinaryName": "JeofficeQRAbsen",
+  "version": "1.0.5",
   "identifier": "id.doran.jeoffice.qrabsen",
   "build": {
     "frontendDist": "../dist",
@@ -28,7 +28,9 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis"],
+    "targets": [
+      "nsis"
+    ],
     "windows": {
       "webviewInstallMode": {
         "type": "downloadBootstrapper"

@@ -68,6 +68,12 @@ export default function LoginPage({ onLogin }: any) {
                 localStorage.setItem("lokasi", res.data.data.lokasi_qr);
                 localStorage.setItem("token", res.data.data.xx_api_token);
                 localStorage.setItem("did", res.data.data.did);
+                if (res.data.data.qr_auto_switch !== undefined) {
+                    localStorage.setItem("qr_auto_switch", res.data.data.qr_auto_switch ? "1" : "0");
+                }
+                if (res.data.data.qr_mode) {
+                    localStorage.setItem("qr_mode", res.data.data.qr_mode);
+                }
                 onLogin();
             } else {
                 setAlert({

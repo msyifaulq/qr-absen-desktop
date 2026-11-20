@@ -11,6 +11,10 @@ const buildDate = new Date()
 export default defineConfig({
   base: "./",
   plugins: [react()],
+  server: {
+    port: 5174,
+    strictPort: true,
+  },
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
     __BUILD_DATE__: JSON.stringify(buildDate),

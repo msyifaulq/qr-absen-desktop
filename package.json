@@ -1,7 +1,7 @@
 {
   "name": "qr-absen-desktop",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "tauri": "tauri",
+    "tauri:dev": "tauri dev",
     "tauri:build": "dotenv -e .env -- npx tauri build"
   },
   "dependencies": {
