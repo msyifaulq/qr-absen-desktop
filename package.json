@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "dotenv -e .env -- npx tauri build"
+    "tauri:build": "dotenv -e .env -- npx tauri build",
+    "package:installer": "powershell -ExecutionPolicy Bypass -File ./scripts/package-nsis.ps1"
   },
   "dependencies": {
     "@ant-design/icons": "^6.2.2",
